@@ -1,0 +1,1 @@
+keytool -genkey -alias ipetty.alias -keyalg RSA -validity 20000 -keystore ipetty.keystore

@@ -1,0 +1,34 @@
+#!/bin/bash  
+# description: Tomcat Start Stop Restart  
+# processname: tomcat  
+# chkconfig: 234 20 80 
+
+. /etc/profile
+
+JAVA_OPTS="-server -Xms512m -Xmx1024m \
+	-XX:MaxNewSize=512m -XX:PermSize=128M -XX:MaxPermSize=512m \
+	-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/apache-tomcat-7.0.52/logs/ \
+	-Dcom.sun.management.jmxremote.port=2099 -Dcom.sun.management.jmxremote.ssl=false \
+	-Djava.rmi.server.hostname=10.233.211.3 \
+	-Dcom.sun.management.jmxremote.authenticate=false"
+
+
+CATALINA_HOME=/opt/apache-tomcat-7.0.52
+CATALINA_PID="$CATALINA_HOME/tomcat.pid"
+
+export JAVA_HOME  
+export JAVA_OPTS
+export CATALINA_HOME  
+export CATALINA_PID
+
+
+case $1 in  
+start)  
+sh $CATALINA_HOME/bin/startup.sh  
+;;   
+stop)     
+sh $CATALINA_HOME/bin/shutdown.sh  
+;;   
+ 
+esac      
+exit 0 
