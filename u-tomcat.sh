@@ -4,7 +4,7 @@
 # 卸载Tomcat
 echo "正在卸载Tomcat"
 
-installPath=/opt/apache-tomcat-7.0.52
+installPath=/opt/apache-tomcat-7.0.54
 serviceName=tomcat
 
 service ${serviceName} stop

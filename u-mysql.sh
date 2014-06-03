@@ -3,7 +3,7 @@
 # 
 # 卸载MySQL
 echo "正在卸载MySQL..."
-installPath=/opt/mysql-5.6.16-linux-glibc2.5-x86_64
+installPath=/opt/mysql-5.6.19-linux-glibc2.5-x86_64
 serviceName=mysqld
 service ${serviceName} stop
 chkconfig --del ${serviceName}

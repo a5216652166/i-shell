@@ -4,12 +4,12 @@
 #安装MySQL
 
 echo "正在安装Mysql..."
-if [ ! -f "/download/mysql-5.6.16-linux-glibc2.5-x86_64.tar.gz" ]; then
-    wget -P /download  "http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.16-linux-glibc2.5-x86_64.tar.gz"
+if [ ! -f "/download/mysql-5.6.19-linux-glibc2.5-x86_64.tar.gz" ]; then
+    wget -P /download  "http://mirrors.sohu.com/mysql/MySQL-5.6/mysql-5.6.19-linux-glibc2.5-x86_64.tar.gz"
 fi
-tar zxf /download/mysql-5.6.16-linux-glibc2.5-x86_64.tar.gz -C /opt
+tar zxf /download/mysql-5.6.19-linux-glibc2.5-x86_64.tar.gz -C /opt
 
-installPath=/opt/mysql-5.6.16-linux-glibc2.5-x86_64
+installPath=/opt/mysql-5.6.19-linux-glibc2.5-x86_64
 dataPath=/home/data/mysql
 sockFile=/tmp/mysql.sock
 
@@ -53,7 +53,7 @@ grep -q "AUTO_GEN_MYSQL" /etc/profile &&{
 	echo "Mysql config exits."
 }||{
 	echo "#AUTO_GEN_MYSQL" >>/etc/profile
-	echo "export PATH=\$PATH:/opt/mysql-5.6.16-linux-glibc2.5-x86_64/bin #AUTO_GEN_MYSQL" >>/etc/profile
+	echo "export PATH=\$PATH:/opt/mysql-5.6.19-linux-glibc2.5-x86_64/bin #AUTO_GEN_MYSQL" >>/etc/profile
 }
 sleep 1
 . /etc/profile

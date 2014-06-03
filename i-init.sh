@@ -4,13 +4,15 @@
 #初始化
 
 #eth0(内网)若需限制某网卡的端口，请参考以下语句，,eth1(电信)，eth2(连通)只开放80端口，
-#iptables -F
-#iptables -A INPUT -i eth1 -p tcp --dport 80 -j ACCEPT
-#iptables -A INPUT -i eth1 -p tcp -j REJECT
+iptables -F
+iptables -A INPUT -i eth1 -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -i eth1 -p tcp -j REJECT
 #iptables -A INPUT -i eth2 -p tcp --dport 80 -j ACCEPT
 #iptables -A INPUT -i eth2 -p tcp -j REJECT
-#service iptables save
-#service iptables restart
+service iptables save
+service iptables restart
+chkconfig iptables on
 
 
 echo "正在初始化..."
