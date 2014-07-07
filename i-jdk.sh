@@ -6,7 +6,7 @@
 echo "正在安装JDK..."
 ##参考https://ivan-site.com/2012/05/download-oracle-java-jre-jdk-using-a-script/
 if [ ! -f "/download/jdk-7u51-linux-x64.tar.gz" ]; then
-    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz"
+    wget -P /download --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz"
 fi
 if [ ! -d "/opt/" ]; then
     mkdir -p /opt
