@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 #
-chomod +x ./*
+chmod +x ./*
 
 ./i-jdk.sh
 ./i-ant.sh
