@@ -2,8 +2,7 @@
 #
 #
 chomod +x ./*
-./change-yum.sh
-./i-init.sh
+
 ./i-jdk.sh
 ./i-ant.sh
 ./i-maven.sh
