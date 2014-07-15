@@ -1,9 +1,8 @@
 #!/bin/sh
 #
 #
-chomod +x ./*
-./change-yum.sh
-./i-init.sh
+chmod +x ./*
+
 ./i-jdk.sh
 ./i-ant.sh
 ./i-maven.sh
