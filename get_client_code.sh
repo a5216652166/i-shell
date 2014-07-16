@@ -20,4 +20,6 @@ else
     git clone $URL
 fi
 
+rm -rf $BASE_DIR/i-client/local.properties
+
 cd $cur_dir

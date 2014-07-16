@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+#
+#
+ipetty_key_alias=somealias
+ipetty_key_alias_password=somepassword
+ipetty_key_store_password=somepassowrd
+ipetty_key_store_path=somepath

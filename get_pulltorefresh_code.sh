@@ -21,5 +21,7 @@ else
 fi
 
 sed -i "/^target=/c\target=android-19" $SRC_DIR/library/project.properties
+rm -rf $SRC_DIR/library/local.properties
+\cp ./build.xml $SRC_DIR/library/
 
 cd $cur_dir

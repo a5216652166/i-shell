@@ -3,10 +3,8 @@
 #
 #安装JDK
 
-yum install -y compat-libstdc++-296.i686
-yum install -y compat-libstdc++-33.i686
-yum install -y zlib.i686
-yum install -y libstdc++.so.6 
+yum install  compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6 
+
 
 echo "正在安装Android SDK..."
 if [ ! -f "/download/adt-bundle-linux-x86_64-20140321.zip" ]; then
