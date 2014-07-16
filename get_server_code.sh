@@ -12,8 +12,8 @@ mkdir -p $BASE_DIR
 
 if [ -d "$SRC_DIR" ]; then
     cd $SRC_DIR
-    echo "git fetch"
-    git fetch 
+    echo "git pull"
+    git pull 
 else
     cd $BASE_DIR
     echo "git clone $URL"
