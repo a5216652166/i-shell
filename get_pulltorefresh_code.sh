@@ -20,4 +20,6 @@ else
     git clone $URL
 fi
 
+sed -i "/^target=/c\target=android-19" $SRC_DIR/library/project.properties
+
 cd $cur_dir
