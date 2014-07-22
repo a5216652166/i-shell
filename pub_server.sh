@@ -45,5 +45,5 @@ mysql -pitserver -e "create database if not exists ipetty default charset utf8;"
 service tomcat start
 
 cd ${cur_dir}
-tail -f $tomcat_home/logs/catalina.out
-echo "===========install ok==========="
+#tail -f $tomcat_home/logs/catalina.out
+echo "===========ok==========="
