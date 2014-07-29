@@ -73,4 +73,16 @@ ${installPath}/bin/mysql -S${sockFile} -uroot -p${password}  -e "flush privilege
 
 #service ${serviceName} restart
 
+#backup task
+\cp -a ./backup_mysql.sh $installPath
+chmod +x $installPath/backup_mysql.sh
+
+grep -q "backup_mysql.sh" /var/spool/cron/root &&{
+    echo "Backup mysql cron has been setted."
+}||{
+    echo "01 3 * * * $installPath/backup_mysql.sh" >>/var/spool/cron/root
+}
+
+service crond restart
+
 echo "===========MySQL ok==========="
