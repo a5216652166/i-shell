@@ -1,7 +1,9 @@
 #!/bin/sh
 #
 #
-chmod +x ./*
+yum install wget ntp zip unzip -y
+chkconfig ntpd on
+service ntpd start
 
 ./i-jdk.sh
 ./i-ant.sh
