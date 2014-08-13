@@ -1,6 +1,8 @@
 #!/bin/sh
 #
 #
+service iptables stop
+chkconfig iptables off
 yum install wget ntp zip unzip -y
 chkconfig ntpd on
 service ntpd start
