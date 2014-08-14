@@ -1,6 +1,8 @@
 #!/bin/sh
 #
 #
+set -e
+
 service iptables stop
 chkconfig iptables off
 yum install wget ntp zip unzip -y

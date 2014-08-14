@@ -3,7 +3,7 @@
 #
 #安装JDK
 
-yum install  compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6 
+yum install -y  compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6 
 
 
 echo "正在安装Android SDK..."
