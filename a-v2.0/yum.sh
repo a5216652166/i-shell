@@ -2,6 +2,8 @@
 #yum各种源
 
 #基础工具
+service iptables stop
+chkconfig iptables off
 yum install wget git ntp zip unzip -y
 rpm -ivh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
@@ -14,8 +16,14 @@ yum install jpackage-utils yum-priorities -y
 yum install goaccess.x86_64 nmon.x86_64 --enablerepo=epel --enablerepo=rpmforge-extras -y
 yum install nginx.x86_64 -y
 yum install mysql-community-server -y
+chkconfig mysqld on
 yum install java-1.7.0-openjdk java-1.7.0-openjdk-devel -y
-yum install jetty.noarch
+groupadd jetty 
+useradd -g jetty jetty
+yum install jetty.noarch -y
+yum update -y
+reboot
+
 yum install ant.noarch
 yum install maven3.noarch --skip-broken
 
