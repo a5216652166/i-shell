@@ -17,6 +17,7 @@ wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.re
 #JVM:
 yum install java-1.7.0-openjdk java-1.7.0-openjdk-devel -y
 #Tomcat:/usr/share/tomcat7/
+#TODO:Edit /etc/yum.conf replace gpgcheck=1 to gpgcheck=0
 yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native -y
 yum install goaccess.x86_64 nmon.x86_64 --enablerepo=epel --enablerepo=rpmforge-extras -y
 yum install nginx -y

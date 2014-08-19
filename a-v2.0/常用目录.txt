@@ -20,6 +20,8 @@ http://blog.csdn.net/ajieyxw/article/details/7888267
 /var/log	系统日志存放，分析日志要看这个目录的东西；
 /var/spool	打印机、邮件、代理服务器等假脱机目录.
 
+http://wenku.baidu.com/link?url=Tzp4aKmHwChbMuF5QLV7_K-IzinrBwZMiD5BhbiTqRJspHhPv-ooE_qa49is90NLyK2t6NwMN6h_UuBr-i6Lt-6CTrYmKHMZL8FJdre-ELy
+http://wenku.baidu.com/view/172d2a583b3567ec102d8a69.html
 
 
 
