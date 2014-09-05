@@ -24,6 +24,7 @@ sed -i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
 yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y
 yum install goaccess.x86_64 nmon.x86_64 --enablerepo=epel --enablerepo=rpmforge-extras -y
 yum install nginx -y
+# Mysql:datadir=/var/lib/mysql
 yum install mysql-community-server mysql-utilities mysql-utilities-extra -y
 chkconfig mysqld on
 yum install ant -y
