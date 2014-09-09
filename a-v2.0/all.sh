@@ -22,6 +22,7 @@ yum makecache
 #TODO:Edit /etc/yum.conf replace gpgcheck=1 to gpgcheck=0
 sed -i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
 yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y
+chkconfig tomcat on
 yum install goaccess.x86_64 nmon.x86_64 --enablerepo=epel --enablerepo=rpmforge-extras -y
 yum install nginx -y
 # Mysql:datadir=/var/lib/mysql

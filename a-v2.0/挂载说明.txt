@@ -5,3 +5,10 @@ mount -t cifs //172.16.80.123/share /mnt/share -o username=administrator,passwor
 
 #取消挂载
 umount /mnt/share
+
+
+#设置代理
+vi /etc/profile
+export http_proxy="http://10.8.0.240:808"
+export https_proxy="http://10.8.0.240:808"
+#export ftp_proxy="http://10.8.0.240:808"
