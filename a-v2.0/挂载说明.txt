@@ -1,0 +1,7 @@
+Linux访问Windows共享：
+#挂载
+mkdir -p /mnt/share
+mount -t cifs //172.16.80.123/share /mnt/share -o username=administrator,password=123
+
+#取消挂载
+umount /mnt/share
