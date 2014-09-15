@@ -1,0 +1,20 @@
+volume client1
+type protocol/client
+option transport-type tcp/client
+option remote-host 172.16.3.53 #//server ip
+option remote-port 6996
+option remote-subvolume locker
+end-volume
+volume client2
+type protocol/client
+option transport-type tcp/client
+option remote-host 172.16.3.66 #//server ip
+option remote-port 6996
+option remote-subvolume locker
+end-volume
+volume unify
+type cluster/distribute
+#type cluster/replicate
+subvolumes client1 client2
+end-volume
+

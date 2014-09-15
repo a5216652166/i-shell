@@ -1,0 +1,7 @@
+/usr/local/nginx/logs/access.log /usr/local/nginx/logs/error.log {
+  daily
+  rotate 14
+  nocompress
+  dateext
+  copytruncate
+}

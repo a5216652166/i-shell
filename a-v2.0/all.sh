@@ -16,11 +16,10 @@ rpm -ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.r
 wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
 #yum repolist
 yum makecache
-#JVM:
 #yum install java-1.7.0-openjdk java-1.7.0-openjdk-devel -y
-#Tomcat:/usr/share/tomcat7/
-#TODO:Edit /etc/yum.conf replace gpgcheck=1 to gpgcheck=0
+#Edit /etc/yum.conf replace gpgcheck=1 to gpgcheck=0
 sed -i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
+#Tomcat:/usr/share/tomcat7/
 yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y
 chkconfig tomcat on
 yum install goaccess.x86_64 nmon.x86_64 --enablerepo=epel --enablerepo=rpmforge-extras -y

@@ -1,0 +1,17 @@
+volume brick
+type storage/posix # POSIX FS translator
+option directory /home/glusterfs # Export this directory
+end-volume
+volume locker
+type features/posix-locks
+subvolumes brick
+end-volume
+### Add network serving capability to above brick.
+volume server
+type protocol/server
+option transport-type tcp/server
+subvolumes locker
+option auth.addr.brick.allow *
+option auth.addr.locker.allow *
+end-volume
+

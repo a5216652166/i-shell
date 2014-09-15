@@ -1,0 +1,259 @@
+﻿
+[root@xmpps01 soft]# ./ejabberd-2.1.9-linux-x86_64-installer.bin 
+Language Selection
+
+Please select the installation language
+[1] Dutch - Nederlands
+[2] English - English
+[3] French - Fran鏰is
+[4] German - Deutsch
+[5] Russian - ???????
+[6] Simplified Chinese - ????
+[7] Spanish - Espa駉l
+Please choose an option [2] : 2
+----------------------------------------------------------------------------
+Welcome to the ejabberd Setup Wizard.
+
+----------------------------------------------------------------------------
+Please read the following License Agreement. You must accept the terms of this 
+agreement before continuing with the installation.
+
+Press [Enter] to continue : 
+As a special exception, the authors give permission to link this program
+with the OpenSSL library and distribute the resulting binary.
+
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 2, June 1991
+
+ Copyright (C) 1989, 1991 Free Software Foundation, Inc.
+     59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+....
+
+Press [Enter] to continue : 
+
+Do you accept this license? [y/n]: y
+
+----------------------------------------------------------------------------
+Please specify the directory where ejabberd will be installed.
+
+Installation Directory [/opt/ejabberd-2.1.9]: 
+
+----------------------------------------------------------------------------
+ejabberd server domain
+
+Please enter the desired ejabberd domain name. The domain is the visible attribute that is added to the username to form the Jabber Identifier (for example: user@example.net). This computer must be known on the network with this address name.
+
+ejabberd server domain [xmpps01.kedacom.local]: kedacom.local
+
+----------------------------------------------------------------------------
+Administrator username
+
+Please enter the administrator username for the current ejabberd installation. A Jabber account with this username will be created and granted administrative privileges. Don't use blankspaces in the username. 
+
+Administrator username [admin]: 
+
+----------------------------------------------------------------------------
+Administrator password
+
+Please provide a password for the administrator user (at least 5 characters).
+
+Administrator password :
+Retype password :
+----------------------------------------------------------------------------
+Cluster
+
+Will this node be part of a cluster ? (Please note ejabberd clustering is intended for advanced users).
+
+Cluster [y/N]: y
+
+
+----------------------------------------------------------------------------
+Cluster
+
+Please copy your $HOME/.erlang.cookie file from another node. Warning: For security reason, you are encouraged to block port 4369 from external connections in your firewall.
+Press [Enter] to continue : 
+
+----------------------------------------------------------------------------
+Cluster node name
+
+Please complete the cluster node name with the primary network name of this computer.
+
+Cluster node name: ejabberd@ [xmpps01.kedacom.local]: 
+
+----------------------------------------------------------------------------
+Setup is now ready to begin installing ejabberd on your computer.
+
+Do you want to continue? [Y/n]: y
+
+----------------------------------------------------------------------------
+Please wait while Setup installs ejabberd on your computer.
+
+ Installing
+ 0% ______________ 50% ______________ 100%
+ #########################################
+
+----------------------------------------------------------------------------
+Setup has finished installing ejabberd on your computer.
+
+View Readme file? [Y/n]: n
+
+
+指定FIREWALL_WINDOW范围，打开/opt/ejabberd-2.1.9/conf/ejabberdctl.cfg
+FIREWALL_WINDOW=4000-4200
+
+设置防火墙开放范围
+#ejabberd
+#Standard port for Jabber/XMPP client connections, plain or STARTTLS.
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 5222 -j ACCEPT
+#Standard port for Jabber client connections using the old SSL method.
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 5223 -j ACCEPT
+#Standard port for Jabber/XMPP server connections. s2s
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 5269 -j ACCEPT
+#web admin
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 5280 -j ACCEPT
+#clustering  listens for Erlang node name requests.
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 4369 -j ACCEPT
+-I INPUT -p tcp --dport 4000:4200 -j ACCEPT
+#file
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 7777 -j ACCEPT
+
+
+LDAP配置：，打开/opt/ejabberd-2.1.9/conf/ejabberd.cfg
+
+
+日志
+{loglevel, 3}.
+
+
+注释掉原先的验证方式
+{auth_method, internal}. -->{auth_method, ldap}.
+
+增加:
+%% LDAPConfige--------------------------------
+
+{ldap_servers, ["172.16.3.10"]}.
+{ldap_rootdn, "cn=Manager,dc=com"}.
+{ldap_password, "itserver"}.
+{ldap_encrypt, none}.
+{ldap_port, 389}.
+{ldap_base, "ou=People,o=kedacom,dc=com"}.
+%%{ldap_uids, [{"mail", "%u@kedacom.com"}]}. 
+{ldap_filter, "(objectClass=shadowAccount)"}.
+%% LDAPConfige--------------------------------
+
+指定muc host 名称
+{mod_muc,      [
+		  %%{host, "conference.@HOST@"} --> {host, "conference.@HOST@"}
+
+开启代理,支持文件
+%%{mod_proxy65,[]} -->{mod_proxy65,[]}
+
+
+启用ldap的Vcard模块
+%%{mod_vcard,    []},
+  {mod_vcard_ldap,[]},
+
+启用ping(便于负载均衡)
+{mod_ping,  [{send_pings, true}, {ping_interval, 240}, {timeout_action, kill}]}
+
+
+./ejabberdctl start
+[root@xmpps01 bin]# ./ejabberdctl status
+The node 'ejabberd@xmpps01.kedacom.local' is started with status: started
+ejabberd 2.1.9 is running in that node
+
+cd /root
+[root@xmpps01 ~]# ls -a
+.                .bash_history  .bashrc  .erlang.cookie  .gconfd             .mysql_history
+..               .bash_logout   .cshrc   erlang.cookie   install.log         .tcshrc
+anaconda-ks.cfg  .bash_profile  .elinks  .gconf          install.log.syslog
+
+
+
+集群
+[root@xmpps02 ~]# cp erlang.cookie .erlang.cookie 
+cp：是否覆盖“.erlang.cookie”? y
+[root@xmpps02 ~]# cd /opt/ejabberd-2.1.9/
+[root@xmpps02 ejabberd-2.1.9]# ls
+bin  conf  database  doc  includes  lib  logs  uninstall
+[root@xmpps02 ejabberd-2.1.9]# cd database/
+[root@xmpps02 database]# ls
+ejabberd@xmpps02.kedacom.local
+[root@xmpps02 database]# rm -rf ejabberd\@xmpps02.kedacom.local/*
+[root@xmpps02 ejabberd-2.1.9]# cd bin
+
+[root@xmpps02 bin]# ./erl -name ejabberd@xmpps02.kedacom.local   -mnesia dir '"/opt/ejabberd-2.1.9/database/ejabberd@xmpps02.kedacom.local"' -mnesia extra_db_nodes "['ejabberd@xmpps01.kedacom.local']" -s mnesia
+Erlang (BEAM) emulator version 5.6.4 [source] [64-bit] [smp:2] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.6.4  (abort with ^G)
+(ejabberd@xmpps02.kedacom.local)1> mnesia:info().
+---> Processes holding locks <--- 
+---> Processes waiting for locks <--- 
+---> Participant transactions <--- 
+---> Coordinator transactions <---
+---> Uncertain transactions <--- 
+---> Active tables <--- 
+schema         : with 38       records occupying 4680     words of mem
+===> System info in version "4.4.5", debug level = none <===
+opt_disc. Directory "/opt/ejabberd-2.1.9/database/ejabberd@xmpps02.kedacom.local" is NOT used.
+use fallback at restart = false
+running db nodes   = ['ejabberd@xmpps01.kedacom.local','ejabberd@xmpps02.kedacom.local']
+stopped db nodes   = [] 
+master node tables = []
+remote             = [acl,bytestream,caps_features,captcha,config,http_bind,
+                      iq_response,irc_custom,last_activity,local_config,
+                      mod_register_ip,motd,motd_users,muc_online_room,
+                      muc_registered,muc_room,offline_msg,passwd,privacy,
+                      private_storage,pubsub_index,pubsub_item,
+                      pubsub_last_item,pubsub_node,pubsub_state,
+                      pubsub_subscription,reg_users_counter,roster,
+                      roster_version,route,s2s,session,session_counter,
+                      sr_group,sr_user,vcard,vcard_search]
+ram_copies         = [schema]
+disc_copies        = []
+disc_only_copies   = []
+[] = [local_config,caps_features,mod_register_ip]
+[{'ejabberd@xmpps01.kedacom.local',disc_copies}] = [config,
+                                                    pubsub_subscription,
+                                                    privacy,passwd,irc_custom,
+                                                    roster,last_activity,
+                                                    sr_user,roster_version,
+                                                    motd,acl,pubsub_index,
+                                                    sr_group,vcard_search,
+                                                    motd_users,muc_room,
+                                                    pubsub_state,
+                                                    muc_registered,
+                                                    pubsub_node]
+[{'ejabberd@xmpps01.kedacom.local',disc_copies},
+ {'ejabberd@xmpps02.kedacom.local',ram_copies}] = [schema]
+[{'ejabberd@xmpps01.kedacom.local',disc_only_copies}] = [offline_msg,vcard,
+                                                         private_storage,
+                                                         pubsub_item]
+[{'ejabberd@xmpps01.kedacom.local',ram_copies}] = [http_bind,
+                                                   reg_users_counter,
+                                                   bytestream,
+                                                   pubsub_last_item,route,s2s,
+                                                   captcha,session_counter,
+                                                   session,iq_response,
+                                                   muc_online_room]
+3 transactions committed, 0 aborted, 0 restarted, 0 logged to disc
+0 held locks, 0 in queue; 0 local transactions, 0 remote
+0 transactions waits for other nodes: []
+ok
+(ejabberd@xmpps02.kedacom.local)2> mnesia:change_table_copy_type(schema, node(), disc_copies).
+{atomic,ok}
+(ejabberd@xmpps02.kedacom.local)3> init:stop().
+ok
+(ejabberd@xmpps02.kedacom.local)4> [root@xmpps02 bin]# 
+
+[root@xmpps02 bin]# ./ejabberdctl start
+[root@xmpps02 bin]# ./ejabberdctl status
+The node 'ejabberd@xmpps02.kedacom.local' is started with status: started
+ejabberd 2.1.9 is running in that node
+
+
+nslookup -qt=SRV _xmpp-client._TCP.ts.com
+
+dig -t SRV _xmpp-client._TCP.ts.com

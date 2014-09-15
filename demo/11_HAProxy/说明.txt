@@ -1,0 +1,86 @@
+配置日志----------------------------------
+# vim /etc/syslog.conf
+
+在最下边增加
+local3.*         /var/log/haproxy.log
+local0.*         /var/log/haproxy.log
+
+重启核心日志服务使配置起效
+# service syslog restart
+
+运行：----------------------------------------
+
+启动服务：
+# /usr/local/haproxy/sbin/haproxy -f /usr/local/haproxy/haproxy.cfg
+
+重启服务：
+# /usr/local/haproxy/sbin/haproxy -f /usr/local/haproxy/haproxy.cfg -st `cat /usr/local/haproxy/logs/haproxy.pid`  (没有换行)
+
+停止服务：
+# killall haproxy
+
+注册服务---------------------------------------
+# vim /etc/rc.d/init.d/haproxy  内容如下：
+
+#! /bin/sh
+set -e
+ 
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/haproxy/sbin
+PROGDIR=/usr/local/haproxy
+PROGNAME=haproxy
+DAEMON=$PROGDIR/sbin/$PROGNAME
+CONFIG=$PROGDIR/conf/$PROGNAME.conf
+PIDFILE=$PROGDIR/run/$PROGNAME.pid
+DESC="HAProxy daemon"
+SCRIPTNAME=/etc/init.d/$PROGNAME
+ 
+# Gracefully exit if the package has been removed.
+test -x $DAEMON || exit 0
+ 
+start()
+{
+        echo -n "Starting $DESC: $PROGNAME"
+        $DAEMON -f $CONFIG
+        echo "."
+}
+ 
+stop()
+{
+        echo -n "Stopping $DESC: $PROGNAME"
+        haproxy_pid=cat $PIDFILE
+        kill $haproxy_pid
+        echo "."
+}
+ 
+restart()
+{
+        echo -n "Restarting $DESC: $PROGNAME"
+        $DAEMON -f $CONFIG -p $PIDFILE -sf $(cat $PIDFILE)
+        echo "."
+}
+ 
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        restart
+        ;;
+  *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac 
+exit 0
+
+保存后赐予可执行权限
+# chmod +x /etc/rc.d/init.d/haproxy
+
+就可以使用 service haproxy start|stop|restart 来控制服务的启动停止跟重启。
+并通过以下命令加载到开机服务启动列表
+# chkconfig --add haproxy
+
+

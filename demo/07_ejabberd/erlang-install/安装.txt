@@ -1,0 +1,25 @@
+安装模块以后，在配置文件中加入
+
+%% Only admins can send packets to multicast service
+{access, multicast, [{allow, admin}, {deny, all}]}.
+
+
+ {mod_multicast, [
+     %{host, "multicast.example.org"},
+     {access, multicast},
+     {limits, [
+       {local, message, infinite},
+       {local, presence, infinite},
+       {remote, message, infinite}
+     ]}
+  ]},
+
+测试:
+<message to='multicast.ts.com' from='admin@ts.com'>
+   <addresses xmlns='http://jabber.org/protocol/address'>
+     <address type='to'  jid='xiaojinghai@ts.com'/>
+     <address type='cc'  jid='luocanfeng@ts.com'/>
+     <address type='bcc' jid='zhangzuliang@kedacom.com'/>
+   </addresses>
+   <body>Hello, World!</body>
+</message>

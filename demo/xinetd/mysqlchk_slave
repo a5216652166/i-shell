@@ -1,0 +1,12 @@
+# mysql health check service
+service mysqlchk_slave
+{ 
+        flags           = REUSE 
+        socket_type     = stream 
+        port            = 3308
+        wait            = no 
+        user            = root 
+        server          = /opt/mysqlchk_slave.sh
+        log_on_failure  += USERID 
+        disable         = no 
+}

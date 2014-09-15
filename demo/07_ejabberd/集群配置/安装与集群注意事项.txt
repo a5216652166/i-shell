@@ -1,0 +1,99 @@
+安装时注意：
+
+
+ejabberd server domain [vs51]: ts.com
+
+
+Cluster [y/N]: y
+
+
+
+-------------------------------------------------------
+安装后的配置
+
+日志
+{loglevel, 3}.
+
+修改客户端最大并发
+{max_stanza_size, 131072}
+
+
+注释掉原先的验证方式
+{auth_method, internal}. -->{auth_method, ldap}.
+
+增加:
+%% LDAPConfige--------------------------------
+{ldap_servers, ["172.16.3.10"]}.
+{ldap_rootdn, "cn=Manager,dc=com"}.
+{ldap_password, "itserver"}.
+{ldap_encrypt, none}.
+{ldap_port, 389}.
+{ldap_base, "ou=People,o=kedacom,dc=com"}.
+%%{ldap_uids, [{"mail", "%u@kedacom.com"}]}. 
+{ldap_filter, "(objectClass=shadowAccount)"}.
+%% LDAPConfige--------------------------------
+
+禁用irc服务
+{mod_irc,      []}, -->%%{mod_irc,      []},
+
+指定muc host 名称
+{mod_muc,      [
+		  %%{host, "conference.@HOST@"} --> {host, "conference.@HOST@"}
+
+
+增加multicase模快
+
+
+
+启用ping(便于负载均衡)
+{mod_ping,  [{send_pings, true}, {ping_interval, 240}, {timeout_action, none}]}
+
+-------------------------------------------------------
+集群注意事项
+先启动第一台的xmpp服务
+注意先同步时间
+确认第二台机器的.erlang.cookie文件内容与第一台机器相同
+如果分布式节点的名称使用ip则集群时无需配置host，否则需要集群各结点之间相互配置/etc/hosts文件以识别各节点
+删除了第二台机器的数据库
+rm -rf ejabberd\@172.16.3.52/*
+
+scp -r root@172.16.3.51:/root/.erlang.cookie  /root/.erlang.cookie
+
+
+*********非IP作为节点名称需要配置host或DNS解析**********
+./erl -sname ejabberd@vs52 \
+-mnesia dir '"/opt/ejabberd-2.1.10/database/ejabberd@vs52"' \
+-mnesia extra_db_nodes "['ejabberd@vs51']" \
+-s mnesia
+
+./erl -sname ejabberd@vs53 \
+-mnesia dir '"/opt/ejabberd-2.1.10/database/ejabberd@vs53"' \
+-mnesia extra_db_nodes "['ejabberd@vs51']" \
+-s mnesia
+
+**********使用IP作为节点名称**********
+./erl -name ejabberd@172.16.3.16 \
+-mnesia dir '"/opt/ejabberd-2.1.10/database/ejabberd@172.16.3.16"' \
+-mnesia extra_db_nodes "['ejabberd@172.16.3.6']" \
+-s mnesia
+
+./erl -name ejabberd@172.16.3.53 \
+-mnesia dir '"/opt/ejabberd-2.1.10/database/ejabberd@172.16.3.53"' \
+-mnesia extra_db_nodes "['ejabberd@172.16.3.51']" \
+-s mnesia
+
+
+mnesia:info().
+确认服务器输出类似以下信息:
+running db nodes   = ['ejabberd@172.16.3.51','ejabberd@172.16.3.52']
+stopped db nodes   = [] 
+
+>mnesia:change_table_copy_type(schema, node(), disc_copies).
+
+>q().
+
+---------------------------------------
+nslookup -qt=SRV _xmpp-client._TCP.ts.com
+
+dig -t SRV _xmpp-client._TCP.ts.com
+-------------------------------------------------------

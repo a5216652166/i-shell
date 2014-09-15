@@ -1,0 +1,39 @@
+﻿eth0 内网：10.23.46.5/11,10.30.0.254 ,255.224.0.0-11
+eth1 电信：58.211.249.167/28, 58.211.249.161 ,255.255.255.240-28
+eth2 联通：58.240.217.247/28, 58.240.217.241 ,255.255.255.240-28
+
+
+增加路由名称
+/etc/iproute2/rt_tables
+
+1 RULE0
+2 RULE1
+3 RULE2
+
+
+/etc/sysconfig/network
+
+GATEWAY=58.211.249.161
+
+/etc/rc.d/rc.local，中增加：
+ip rule add from 10.23.46.5/11 table RULE0
+ip route add default via 10.30.0.254 dev eth0 table RULE0
+
+ip rule add from 58.211.249.167/28 table RULE1
+ip route add default via 58.211.249.161 dev eth1 table RULE1
+
+ip rule add from 58.240.217.247/28 table RULE2
+ip route add default via 58.240.217.241 dev eth2 table RULE2
+
+ip rule add to 10.0.0.0/8 table RULE0
+ip rule add to 172.16.0.0/16 table RULE0
+ip rule add to 192.168.0.0/16 table RULE0
+
+ip route flush cache
+
+
+以上配置是为了在系统重新启动以后执行路由的设置，若要即时生效可以直接运行。
+
+
+
+
