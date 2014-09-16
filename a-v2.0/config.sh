@@ -89,6 +89,7 @@ sed -i "/\[mysqld\]/a\ server-id=$RANDOM" $MYSQL_CONFIG_FILE
 #http://www.percona.com/doc/percona-xtrabackup/2.2/
 #http://www.mike.org.cn/articles/xtrabackup-guide/
 #http://www.360doc.com/content/12/1126/09/834950_250260653.shtml
+#https://github.com/sixninetynine/surrogate
 rpm -Uhv http://www.percona.com/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
 yum install xtrabackup -y
 
