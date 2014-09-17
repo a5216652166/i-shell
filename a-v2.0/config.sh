@@ -53,9 +53,11 @@ sed -i '/unpackWARs="true" autoDeploy="true"/c\unpackWARs="false" autoDeploy="fa
 ####MYSQL####
 MYSQL_CONFIG_FILE=/etc/my.cnf
 MYSQL_BAK_CONFIG_FILE=/etc/my.cnf.bak
+MYSQL_ROOT_PASSWORD=password
 MYSQL_REMOTE_USERNAME=
 MYSQL_REMOTE_PASSWORD=
 
+mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
 mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by \"repl\";"
 
 if [ ! -f "$MYSQL_BAK_CONFIG_FILE" ]; then
@@ -84,6 +86,8 @@ sed -i '/\[mysqld\]/a\ relay-log=slave-relay-bin.log' $MYSQL_CONFIG_FILE
 # Server ID
 sed -i "/\[mysqld\]/a\ server-id=$RANDOM" $MYSQL_CONFIG_FILE
 # GTID 复制:http://blog.itpub.net/24945919/viewspace-764369/
+service mysqld restart
+
 
 #mysql 备份：MariaDB XtraBackup，http://blog.csdn.net/yangzhawen/article/details/30282993 http://www.v2ex.com/t/113430 http://developer.51cto.com/art/201308/406320.htm http://www.tuicool.com/articles/zauqaeN
 #http://www.percona.com/doc/percona-xtrabackup/2.2/
@@ -92,6 +96,13 @@ sed -i "/\[mysqld\]/a\ server-id=$RANDOM" $MYSQL_CONFIG_FILE
 #https://github.com/sixninetynine/surrogate
 rpm -Uhv http://www.percona.com/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
 yum install xtrabackup -y
+#innobackupex说明：http://blog.csdn.net/dbanote/article/details/13295727
+#全备（/backup/mysql/data/2014-09-09_19-01-35）:innobackupex  /data/backups/daily/Tuesday/full-2014-09-09_2024
+#增量备:innobackupex --user=root --password=*** --incremental-basedir=/backup/mysql/data/2013-10-29_09-05-25 --incremental /backup/mysql/data  
+
+git clone https://github.com/jinghai/surrogate
+./surrogate/installer.sh << \n
+#echo "" > /var/spool/cron/root
 
 
 
