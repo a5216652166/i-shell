@@ -1,6 +1,8 @@
 #!/bin/sh
 #
 
+set -e
+
 ####NGINX####
 NGINX_CONFIG_DIR=/etc/nginx
 NGINX_CONFIG_BACKUP_DIR=/etc/nginx.bak
@@ -53,13 +55,29 @@ sed -i '/unpackWARs="true" autoDeploy="true"/c\unpackWARs="false" autoDeploy="fa
 ####MYSQL####
 MYSQL_CONFIG_FILE=/etc/my.cnf
 MYSQL_BAK_CONFIG_FILE=/etc/my.cnf.bak
-MYSQL_ROOT_PASSWORD=password
-MYSQL_REMOTE_USERNAME=
-MYSQL_REMOTE_PASSWORD=
+MYSQL_DATA_DIR=$(cat $MYSQL_CONFIG_FILE | sed -n '/datadir=/'p | sed 's/datadir=//')
+MYSQL_BACKUP_DIR=/home/backup/mysql
 
-mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
+#定时备份
+mkdir -p $MYSQL_BACKUP_DIR
+echo '#!/bin/sh' >> $MYSQL_DATA_DIR/mysql_backup.sh
+echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_DATA_DIR/mysql_backup.sh
+echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_$name.sql.gz" >> $MYSQL_DATA_DIR/mysql_backup.sh
+echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_DATA_DIR/mysql_backup.sh
+chmod +x $MYSQL_DATA_DIR/mysql_backup.sh
+grep -q "mysql_backup.sh" /var/spool/cron/root &&{
+    echo "Backup mysql cron has been setted."
+}||{
+    #echo "01 3 * * * $MYSQL_DATA_DIR/mysql_backup.sh" >>/var/spool/cron/root
+    #for test
+    echo "*/1 * * * * $MYSQL_DATA_DIR/mysql_backup.sh" >>/var/spool/cron/root
+}
+service crond restart
+
+#mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
 mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by \"repl\";"
 
+#配置
 if [ ! -f "$MYSQL_BAK_CONFIG_FILE" ]; then
     \cp -av $MYSQL_CONFIG_FILE $MYSQL_BAK_CONFIG_FILE
 else
@@ -94,14 +112,14 @@ service mysqld restart
 #http://www.mike.org.cn/articles/xtrabackup-guide/
 #http://www.360doc.com/content/12/1126/09/834950_250260653.shtml
 #https://github.com/sixninetynine/surrogate
-rpm -Uhv http://www.percona.com/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
-yum install xtrabackup -y
+#rpm -Uhv http://www.percona.com/downloads/percona-release/percona-release-0.0-1.x86_64.rpm
+#yum install xtrabackup -y
 #innobackupex说明：http://blog.csdn.net/dbanote/article/details/13295727
 #全备（/backup/mysql/data/2014-09-09_19-01-35）:innobackupex  /data/backups/daily/Tuesday/full-2014-09-09_2024
 #增量备:innobackupex --user=root --password=*** --incremental-basedir=/backup/mysql/data/2013-10-29_09-05-25 --incremental /backup/mysql/data  
-
-git clone https://github.com/jinghai/surrogate
-./surrogate/installer.sh << \n
+#git clone https://github.com/jinghai/surrogate
+#./surrogate/installer.sh <<-EOF
+#EOF
 #echo "" > /var/spool/cron/root
 
 
