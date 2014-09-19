@@ -71,9 +71,9 @@ touch /var/spool/cron/root
 grep -q "$MYSQL_BACKUP_CMD" /var/spool/cron/root &&{
     echo "Backup mysql cron has been setted."
 }||{
-    #echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
+    echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
     #for test
-    echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
+    #echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
 }
 service crond restart
 
