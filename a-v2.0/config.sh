@@ -67,7 +67,8 @@ echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_BACKUP_CMD
 echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_\$name.sql.gz" >> $MYSQL_BACKUP_CMD
 echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_BACKUP_CMD
 chmod +x $MYSQL_BACKUP_CMD
-grep -q "mysql_backup.sh" /var/spool/cron/root &&{
+touch /var/spool/cron/root
+grep -q "$MYSQL_BACKUP_CMD" /var/spool/cron/root &&{
     echo "Backup mysql cron has been setted."
 }||{
     #echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
