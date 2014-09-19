@@ -57,20 +57,22 @@ MYSQL_CONFIG_FILE=/etc/my.cnf
 MYSQL_BAK_CONFIG_FILE=/etc/my.cnf.bak
 MYSQL_DATA_DIR=$(cat $MYSQL_CONFIG_FILE | sed -n '/datadir=/'p | sed 's/datadir=//')
 MYSQL_BACKUP_DIR=/home/backup/mysql
-
+MYSQL_BACKUP_CMD=$MYSQL_DATA_DIR/mysql_backup.sh
 #定时备份
 mkdir -p $MYSQL_BACKUP_DIR
-echo '#!/bin/sh' >> $MYSQL_DATA_DIR/mysql_backup.sh
-echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_DATA_DIR/mysql_backup.sh
-echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_$name.sql.gz" >> $MYSQL_DATA_DIR/mysql_backup.sh
-echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_DATA_DIR/mysql_backup.sh
-chmod +x $MYSQL_DATA_DIR/mysql_backup.sh
+touch $MYSQL_BACKUP_CMD
+echo > $MYSQL_BACKUP_CMD
+echo '#!/bin/sh' >> $MYSQL_BACKUP_CMD
+echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_BACKUP_CMD
+echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_\$name.sql.gz" >> $MYSQL_BACKUP_CMD
+echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_BACKUP_CMD
+chmod +x $MYSQL_BACKUP_CMD
 grep -q "mysql_backup.sh" /var/spool/cron/root &&{
     echo "Backup mysql cron has been setted."
 }||{
-    #echo "01 3 * * * $MYSQL_DATA_DIR/mysql_backup.sh" >>/var/spool/cron/root
+    #echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
     #for test
-    echo "*/1 * * * * $MYSQL_DATA_DIR/mysql_backup.sh" >>/var/spool/cron/root
+    echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
 }
 service crond restart
 
