@@ -41,6 +41,7 @@ sed -i '/server 127.0.0.1:8080;/a\    }'		$NGINX_CONFIG_FILE
 sed -i '/\/usr\/share\/nginx\/html/,+1d'			$NGINX_SERVER_CONFIG_FILE
 sed -i '/location \/ {/a\        proxy_pass http://home;'	$NGINX_SERVER_CONFIG_FILE
 
+service nginx restart
 
 ####TOMCAT####
 TOMCAT_HTTP_PROT=8080
@@ -55,6 +56,7 @@ sed -i '/<Connector port="8080"/a\               URIEncoding="UTF-8" ' $TOMCAT_S
 sed -i '/<Connector port="8080" protocol="HTTP\/1.1"/c\<Connector port="8080" protocol="HTTP\/1.1"' $TOMCAT_SERVER_FILE
 sed -i '/unpackWARs="true" autoDeploy="true"/c\unpackWARs="false" autoDeploy="false">' $TOMCAT_SERVER_FILE
 
+service tomcat restart
 
 ####MYSQL####
 MYSQL_CONFIG_FILE=/etc/my.cnf
