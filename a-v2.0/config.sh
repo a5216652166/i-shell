@@ -153,4 +153,6 @@ service crond restart
 #TODO:·À»ðÇ½¶Ë¿Ú¡¢i-client¡¢i-server
 ####ISERVER####
 
+./iserver_install.sh
+
 ####ICLIENT####

@@ -12,3 +12,6 @@ vi /etc/profile
 export http_proxy="http://10.8.0.240:808"
 export https_proxy="http://10.8.0.240:808"
 #export ftp_proxy="http://10.8.0.240:808"
+
+
+yum install goagent
