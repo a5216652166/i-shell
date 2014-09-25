@@ -23,11 +23,15 @@ sed -i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
 #Tomcat:/usr/share/tomcat7/
 yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y
 chkconfig tomcat on
+service tomcat start
 yum install goaccess.x86_64 nmon.x86_64 --enablerepo=epel --enablerepo=rpmforge-extras -y
 yum install nginx -y
+chkconfig nginx on
+service nginx start
 # Mysql:datadir=/var/lib/mysql
 yum install mysql-community-server mysql-utilities mysql-utilities-extra -y
 chkconfig mysqld on
+service mysqld start
 yum install ant -y
 #maven:/usr/share/apache-maven/
 yum install apache-maven  -y
@@ -35,7 +39,7 @@ curl -s get.gvmtool.net | bash
 source "/root/.gvm/bin/gvm-init.sh"
 gvm version
 yum update -y
-reboot
+#reboot
 
 
 
