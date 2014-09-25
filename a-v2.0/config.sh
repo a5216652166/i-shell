@@ -1,10 +1,11 @@
 #!/bin/sh
 #
-source ./config.conf
 set -e
+source ./config.conf
 ####Global#####
 mkdir -p $GLOBAL_SHELLS_HOME
-
+mkdir -p $GLOBAL_SOURCECODE_DIR
+mkdir -p $GLOBAL_DATA_DIR
 
 ####NGINX####
 # 没备份则备份，有备份则还原
@@ -127,13 +128,11 @@ service crond restart
 #echo "" > /var/spool/cron/root
 
 
-
-
-
-
-#TODO:防火墙端口、i-client、i-server
 ####ISERVER####
-
-./iserver_install.sh
+#./iserver_install.sh
 
 ####ICLIENT####
+
+
+
+#TODO:防火墙端口
