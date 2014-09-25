@@ -1,7 +1,6 @@
 #!/bin/sh
 #
 
-set -e
-
-echo $TOMCAT_CONFIG_DIR
+source ./config.conf
+echo $MYSQL_DATA_DIR
 
