@@ -11,3 +11,4 @@ function getSourceCode() {
   cd $cur_dir
 }
 
+getSourceCode
