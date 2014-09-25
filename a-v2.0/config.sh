@@ -32,7 +32,7 @@ sed -i /gzip_types/d $NGINX_CONFIG_FILE
 sed -i '/gzip  on;/a\    gzip_types text/plain text/html text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;' $NGINX_CONFIG_FILE
 
 # ÅäÖÃ/etc/nginx/nginx.conf-->upstream home
-sed -i '/gzip/a\    upstream home {'			$NGINX_CONFIG_FILE
+sed -i '/gzip_types/a\    upstream home {'			$NGINX_CONFIG_FILE
 sed -i '/upstream home/a\    server 127.0.0.1:8080;'	$NGINX_CONFIG_FILE
 sed -i '/upstream home/a\    ip_hash;'			$NGINX_CONFIG_FILE
 sed -i '/server 127.0.0.1:8080;/a\    }'		$NGINX_CONFIG_FILE
