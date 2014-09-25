@@ -5,6 +5,7 @@ set -e
 
 service iptables stop
 chkconfig iptables off
+chkconfig ntpd on
 rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
 yum install wget git ntp zip unzip mlocate -y

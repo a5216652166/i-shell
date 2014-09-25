@@ -2,6 +2,10 @@
 #
 
 set -e
+####Global#####
+GLOBAL_SHELLS_HOME=/home/shells
+mkdir -p /home/shells
+
 
 ####NGINX####
 NGINX_CONFIG_DIR=/etc/nginx
@@ -57,7 +61,7 @@ MYSQL_CONFIG_FILE=/etc/my.cnf
 MYSQL_BAK_CONFIG_FILE=/etc/my.cnf.bak
 MYSQL_DATA_DIR=$(cat $MYSQL_CONFIG_FILE | sed -n '/datadir=/'p | sed 's/datadir=//')
 MYSQL_BACKUP_DIR=/home/backup/mysql
-MYSQL_BACKUP_CMD=$MYSQL_DATA_DIR/mysql_backup.sh
+MYSQL_BACKUP_CMD=$GLOBAL_SHELLS_HOME/mysql_backup.sh
 #定时备份
 mkdir -p $MYSQL_BACKUP_DIR
 touch $MYSQL_BACKUP_CMD
@@ -77,6 +81,7 @@ grep -q "$MYSQL_BACKUP_CMD" /var/spool/cron/root &&{
 }
 service crond restart
 
+##账号管理
 #mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
 mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by \"repl\";"
 
