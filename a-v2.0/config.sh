@@ -67,24 +67,6 @@ MYSQL_BAK_CONFIG_FILE=/etc/my.cnf.bak
 MYSQL_DATA_DIR=$(cat $MYSQL_CONFIG_FILE | sed -n '/datadir=/'p | sed 's/datadir=//')
 MYSQL_BACKUP_DIR=$GLOBAL_HOME/backup/mysql
 MYSQL_BACKUP_CMD=$GLOBAL_SHELLS_HOME/mysql_backup.sh
-#定时备份
-mkdir -p $MYSQL_BACKUP_DIR
-touch $MYSQL_BACKUP_CMD
-echo > $MYSQL_BACKUP_CMD
-echo '#!/bin/sh' >> $MYSQL_BACKUP_CMD
-echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_BACKUP_CMD
-echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_\$name.sql.gz" >> $MYSQL_BACKUP_CMD
-echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_BACKUP_CMD
-chmod +x $MYSQL_BACKUP_CMD
-touch /var/spool/cron/root
-grep -q "$MYSQL_BACKUP_CMD" /var/spool/cron/root &&{
-    echo "Backup mysql cron has been setted."
-}||{
-    echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
-    #for test
-    #echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
-}
-service crond restart
 
 ##账号管理
 #mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
@@ -118,6 +100,25 @@ sed -i '/\[mysqld\]/a\ relay-log=slave-relay-bin.log' $MYSQL_CONFIG_FILE
 sed -i "/\[mysqld\]/a\ server-id=$RANDOM" $MYSQL_CONFIG_FILE
 # GTID 复制:http://blog.itpub.net/24945919/viewspace-764369/
 service mysqld restart
+
+##定时备份
+mkdir -p $MYSQL_BACKUP_DIR
+touch $MYSQL_BACKUP_CMD
+echo > $MYSQL_BACKUP_CMD
+echo '#!/bin/sh' >> $MYSQL_BACKUP_CMD
+echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_BACKUP_CMD
+echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_\$name.sql.gz" >> $MYSQL_BACKUP_CMD
+echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_BACKUP_CMD
+chmod +x $MYSQL_BACKUP_CMD
+touch /var/spool/cron/root
+grep -q "$MYSQL_BACKUP_CMD" /var/spool/cron/root &&{
+    echo "Backup mysql cron has been setted."
+}||{
+    echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
+    #for test
+    #echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
+}
+service crond restart
 
 
 #mysql 备份：MariaDB XtraBackup，http://blog.csdn.net/yangzhawen/article/details/30282993 http://www.v2ex.com/t/113430 http://developer.51cto.com/art/201308/406320.htm http://www.tuicool.com/articles/zauqaeN
