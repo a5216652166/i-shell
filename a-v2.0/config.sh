@@ -48,11 +48,20 @@ service nginx restart
 
 ####TOMCAT####
 TOMCAT_HTTP_PROT=8080
-TOMCAT_CONTEXT_FILE=/etc/tomcat/context.xml
-TOMCAT_SERVER_FILE=/etc/tomcat/server.xml
+TOMCAT_CONFIG_DIR=/etc/tomcat
+TOMCAT_CONFIG_BACKUP_DIR=/etc/tomcat.bak
+TOMCAT_CONTEXT_FILE=$TOMCAT_CONFIG_DIR/context.xml
+TOMCAT_SERVER_FILE=$TOMCAT_CONFIG_DIR/server.xml
+
+# 没备份则备份，有备份则还原
+if [ ! -d $TOMCAT_CONFIG_BACKUP_DIR ]
+then
+    \cp -av $TOMCAT_CONFIG_DIR $TOMCAT_CONFIG_BACKUP_DIR
+else
+   \cp -av $TOMCAT_CONFIG_BACKUP_DIR/* $TOMCAT_CONFIG_DIR
+fi
 
 sed -i '/<Context>/c\<Context allowLinking="true">' $TOMCAT_CONTEXT_FILE
-
 sed -i '/<Connector port="8080"/a\               enableLookups="false" ' $TOMCAT_SERVER_FILE
 sed -i '/<Connector port="8080"/a\               maxThreads="1024" ' $TOMCAT_SERVER_FILE
 sed -i '/<Connector port="8080"/a\               URIEncoding="UTF-8" ' $TOMCAT_SERVER_FILE
