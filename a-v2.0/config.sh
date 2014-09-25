@@ -1,19 +1,12 @@
 #!/bin/sh
 #
-
+source ./config.conf
 set -e
 ####Global#####
-GLOBAL_HOME=/home
-GLOBAL_SHELLS_HOME=$GLOBAL_HOME/shells
 mkdir -p $GLOBAL_SHELLS_HOME
 
 
 ####NGINX####
-NGINX_CONFIG_DIR=/etc/nginx
-NGINX_CONFIG_BACKUP_DIR=/etc/nginx.bak
-NGINX_CONFIG_FILE=/etc/nginx/nginx.conf
-NGINX_SERVER_CONFIG_FILE=/etc/nginx/conf.d/default.conf
-
 # 没备份则备份，有备份则还原
 if [ ! -d $NGINX_CONFIG_BACKUP_DIR ]
 then
@@ -38,7 +31,6 @@ sed -i '/upstream home/a\    server 127.0.0.1:8080;'	$NGINX_CONFIG_FILE
 sed -i '/upstream home/a\    ip_hash;'			$NGINX_CONFIG_FILE
 sed -i '/server 127.0.0.1:8080;/a\    }'		$NGINX_CONFIG_FILE
 
-
 # 删除从0行到index行之间的usr/share所在行以前下一行，相当于删除第一个usr/share行和下一行
 sed -i '0,/index  index.html index.htm;/{/\/usr\/share\/nginx\/html/,+1d}' $NGINX_SERVER_CONFIG_FILE
 # 配置/etc/nginx/conf.d/default.conf-->proxy_pass http://home;
@@ -46,13 +38,8 @@ sed -i '/location \/ {/a\        proxy_pass http://home;'	$NGINX_SERVER_CONFIG_F
 
 service nginx restart
 
-####TOMCAT####
-TOMCAT_HTTP_PROT=8080
-TOMCAT_CONFIG_DIR=/etc/tomcat
-TOMCAT_CONFIG_BACKUP_DIR=/etc/tomcat.bak
-TOMCAT_CONTEXT_FILE=$TOMCAT_CONFIG_DIR/context.xml
-TOMCAT_SERVER_FILE=$TOMCAT_CONFIG_DIR/server.xml
 
+####TOMCAT####
 # 没备份则备份，有备份则还原
 if [ ! -d $TOMCAT_CONFIG_BACKUP_DIR ]
 then
@@ -71,12 +58,6 @@ sed -i '/unpackWARs="true" autoDeploy="true"/c\unpackWARs="false" autoDeploy="fa
 service tomcat restart
 
 ####MYSQL####
-MYSQL_CONFIG_FILE=/etc/my.cnf
-MYSQL_BAK_CONFIG_FILE=/etc/my.cnf.bak
-MYSQL_DATA_DIR=$(cat $MYSQL_CONFIG_FILE | sed -n '/datadir=/'p | sed 's/datadir=//')
-MYSQL_BACKUP_DIR=$GLOBAL_HOME/backup/mysql
-MYSQL_BACKUP_CMD=$GLOBAL_SHELLS_HOME/mysql_backup.sh
-
 ##账号管理
 #mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
 mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by \"repl\";"
