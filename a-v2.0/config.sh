@@ -38,7 +38,8 @@ sed -i '/upstream home/a\    ip_hash;'			$NGINX_CONFIG_FILE
 sed -i '/server 127.0.0.1:8080;/a\    }'		$NGINX_CONFIG_FILE
 
 # 配置/etc/nginx/conf.d/default.conf-->proxy_pass http://home;
-sed -i '/\/usr\/share\/nginx\/html/,+1d'			$NGINX_SERVER_CONFIG_FILE
+# 删除从0行到index行之间的usr/share所在行以前下一行，相当于删除第一个usr/share行和下一行
+sed '0,/index  index.html index.htm;/{/\/usr\/share\/nginx\/html/,+1d}' $NGINX_SERVER_CONFIG_FILE
 sed -i '/location \/ {/a\        proxy_pass http://home;'	$NGINX_SERVER_CONFIG_FILE
 
 service nginx restart
