@@ -42,12 +42,12 @@ function deployIServer(){
 
   cd $ISERVER_UPLOAD_DIR
   set +e
-  zip -r $ISERVER_DEPLOY_BAKUP_DIR/files.zip *
+  zip -r9 $ISERVER_DEPLOY_BAKUP_DIR/files.zip *
   set -e
 
   cd $TOMCAT_HOME/webapps
   #只备份应用和软连接关系
-  zip -ry $ISERVER_DEPLOY_BAKUP_DIR/webapps.zip *
+  zip -ry9 $ISERVER_DEPLOY_BAKUP_DIR/webapps.zip *
 
   #部署
   rm -rf $TOMCAT_HOME/webapps/ROOT/*
