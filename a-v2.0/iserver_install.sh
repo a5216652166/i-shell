@@ -9,7 +9,7 @@ ISERVER_PROJECT_NAME=i-server
 ISERVER_PAKAGE_NAME=ipetty-server.war
 ISERVER_UPLOAD_DIR=$GLOBAL_HOME/files
 ISERVER_BAKUP_DIR=$GLOBAL_BACKUP_DIR/iserver
-ISERVER_DEPLOY_BAKUP_DIR=ISERVER_BAKUP_DIR/deploy
+ISERVER_DEPLOY_BAKUP_DIR=$ISERVER_BAKUP_DIR/deploy
 
 ## ¸üÐÂ
 function getIServerCode() {
@@ -42,8 +42,8 @@ function compileIServer(){
 function deployIServer(){
   #backup
   mkdir -p $ISERVER_DEPLOY_BAKUP_DIR
-  mkdir -p $ISERVER_UPLOAD_DIR
   rm -rf $ISERVER_DEPLOY_BAKUP_DIR/*
+  mkdir -p $ISERVER_UPLOAD_DIR
   \cp -av $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME/target/$ISERVER_PAKAGE_NAME $ISERVER_DEPLOY_BAKUP_DIR/
   mysqldump --all-databases |gzip>$ISERVER_DEPLOY_BAKUP_DIR/sql.gz
   zip -r $ISERVER_DEPLOY_BAKUP_DIR/files.zip $ISERVER_UPLOAD_DIR/
