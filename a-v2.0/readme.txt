@@ -1,6 +1,7 @@
 /home
 ../shells
-../data/files
+../files
 ../backup/mysql
+../backup/iserver
 
 tomcat_home=/usr/share/tomcat
