@@ -33,15 +33,21 @@ function compileIServer(){
 }
 ## 部署
 function deployIServer(){
-  #backup
+  #备份应用、附件、数据库
   mkdir -p $ISERVER_DEPLOY_BAKUP_DIR
   rm -rf $ISERVER_DEPLOY_BAKUP_DIR/*
   mkdir -p $ISERVER_UPLOAD_DIR
-  \cp -av $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME/target/$ISERVER_PAKAGE_NAME $ISERVER_DEPLOY_BAKUP_DIR/
-  mysqldump --all-databases |gzip>$ISERVER_DEPLOY_BAKUP_DIR/sql.gz
-  zip -r $ISERVER_DEPLOY_BAKUP_DIR/files.zip $ISERVER_UPLOAD_DIR/
 
-  #deploy
+  mysqldump --all-databases |gzip>$ISERVER_DEPLOY_BAKUP_DIR/sql.gz
+
+  cd $ISERVER_UPLOAD_DIR
+  zip -r $ISERVER_DEPLOY_BAKUP_DIR/files.zip *
+
+  cd $TOMCAT_HOME/webapps
+  #只备份应用和软连接关系
+  zip -ry $ISERVER_DEPLOY_BAKUP_DIR/webapps.zip *
+
+  #部署
   rm -rf $TOMCAT_HOME/webapps/ROOT/*
   unzip -oq $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME/target/$ISERVER_PAKAGE_NAME -d $TOMCAT_HOME/webapps/ROOT
   sed -i "/^jdbc.username=/c\jdbc.username=root" $TOMCAT_HOME/webapps/ROOT/WEB-INF/classes/jdbc.properties
