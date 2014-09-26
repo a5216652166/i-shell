@@ -4,13 +4,6 @@ set -e
 source ./config.conf
 cur_dir=$(cd "$(dirname "$0")"; pwd)
 
-IAPI_PROJECT_NAME=i-api
-ISERVER_PROJECT_NAME=i-server
-ISERVER_PAKAGE_NAME=ipetty-server.war
-ISERVER_UPLOAD_DIR=$GLOBAL_HOME/files
-ISERVER_BAKUP_DIR=$GLOBAL_BACKUP_DIR/iserver
-ISERVER_DEPLOY_BAKUP_DIR=$ISERVER_BAKUP_DIR/deploy
-
 ## ¸üÐÂ
 function getIServerCode() {
   mkdir -p $GLOBAL_SOURCECODE_DIR
