@@ -41,7 +41,9 @@ function deployIServer(){
   mysqldump --all-databases |gzip>$ISERVER_DEPLOY_BAKUP_DIR/sql.gz
 
   cd $ISERVER_UPLOAD_DIR
+  set +e
   zip -r $ISERVER_DEPLOY_BAKUP_DIR/files.zip *
+  set -e
 
   cd $TOMCAT_HOME/webapps
   #只备份应用和软连接关系
