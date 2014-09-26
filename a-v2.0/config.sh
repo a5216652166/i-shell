@@ -6,6 +6,7 @@ source ./config.conf
 mkdir -p $GLOBAL_SHELLS_HOME
 mkdir -p $GLOBAL_SOURCECODE_DIR
 mkdir -p $GLOBAL_BACKUP_DIR
+mkdir -p $GLOBAL_DOWNLOAD_DIR
 
 ####NGINX####
 # 没备份则备份，有备份则还原
