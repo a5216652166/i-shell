@@ -11,7 +11,12 @@ ICLIENT_PAKAGE_NAME=i-client-release.apk
 function downloadAndroidSDK(){
   mkdir -p $GLOBAL_DOWNLOAD_DIR
   if [ ! -f "$GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip" ]; then
+    set +e
     wget -P $GLOBAL_DOWNLOAD_DIR  "http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip"
+    if [ "$?" -eq "1" ]; then
+      rm -rf $GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip
+    fi
+    set -e
   fi
 }
 
