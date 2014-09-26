@@ -26,6 +26,7 @@ function getIServerCode() {
 }
 
 ## ±‡“Î¥Ú∞¸IServer
+
 function compileIServer(){
   cd $GLOBAL_SOURCECODE_DIR/i-api
   mvn clean install -DskipTests=true 
