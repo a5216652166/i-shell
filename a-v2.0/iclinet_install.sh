@@ -33,8 +33,6 @@ function installAndroidSDK(){
 	echo "#AUTO_GEN_ANDROID" >>/etc/profile
 	echo "export ANDROID_HOME=$Android_SDK_Home #AUTO_GEN_ANDROID" >>/etc/profile
   }
-  . /etc/profile
-  export ANDROID_HOME
   /opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list targets	
   #/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list targets			#检查已安装的SDK版本
   #/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list sdk				#列出所有SDK
@@ -55,7 +53,8 @@ function getIclientCode(){
 }
 
 function compileIclinet(){
-  rm -rf $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/local.properties
+  . /etc/profile
+  #rm -rf $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/local.properties
   #ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME -Dkey.alias=$ipetty_key_alias -Dkey.alias.password=$ipetty_key_alias_password -Dkey.store.password=$ipetty_key_store_password  -Dkey.store=$ipetty_key_store_path clean release
   ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME clean debug
 }
