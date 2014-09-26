@@ -52,16 +52,6 @@ function deployIServer(){
   service tomcat restart
 }
 
-## »¹Ô­
-function rollbackIServer(){
-  rm -rf $ISERVER_UPLOAD_DIR/*
-  unzip -oq $ISERVER_DEPLOY_BAKUP_DIR/files.zip -d $ISERVER_UPLOAD_DIR
-  rm -rf $TOMCAT_HOME/webapps/ROOT/*
-  unzip -oq $ISERVER_DEPLOY_BAKUP_DIR/$ISERVER_PAKAGE_NAME -d $TOMCAT_HOME/webapps/ROOT
-  ln -sf $ISERVER_UPLOAD_DIR $TOMCAT_HOME/webapps/ROOT
-  zcat $ISERVER_DEPLOY_BAKUP_DIR/sql.gz | mysql 
-  service tomcat restart
-}
 
 getIServerCode
 compileIServer
