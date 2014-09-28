@@ -30,7 +30,13 @@ function compileIServer(){
   cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME
   mvn clean install -DskipTests=true 
   cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME
+  set +e
   mvn clean install -DskipTests=true 
+  if [ "$?" -eq "1" ]; then
+      echo "try once again."
+      mvn clean install -DskipTests=true 
+  fi
+  set -e 
 }
 
 ## ²¿Êð
