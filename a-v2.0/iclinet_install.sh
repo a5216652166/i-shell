@@ -5,9 +5,6 @@ set -e
 source ./config.conf
 cur_dir=$(cd "$(dirname "$0")"; pwd)
 
-ICLIENT_PROJECT_NAME=i-client
-ICLIENT_PAKAGE_NAME=i-client-release.apk
-
 function downloadAndroidSDK(){
   mkdir -p $GLOBAL_DOWNLOAD_DIR
   if [ ! -f "$GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip" ]; then
@@ -54,16 +51,20 @@ function getIclientCode(){
 
 function compileIclinet(){
   . /etc/profile
-  #rm -rf $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/local.properties
-  #ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME -Dkey.alias=$ipetty_key_alias -Dkey.alias.password=$ipetty_key_alias_password -Dkey.store.password=$ipetty_key_store_password  -Dkey.store=$ipetty_key_store_path clean release
-  ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME clean debug
+  ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME -Dkey.alias=$ICLIENT_KEY_ALIAS -Dkey.alias.password=$ICLIENT_KEY_ALIAS_PASSWORD -Dkey.store.password=$ICLIENT_KEY_STORE_PASSWORD  -Dkey.store=$ICLIENT_KEY_STORE_FILE clean release
+  #ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME clean debug
 }
 
+function deployIclient(){
+  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/i-client-release.apk $ISERVER_UPLOAD_DIR/ipetty.apk
+  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/update.json $ISERVER_UPLOAD_DIR/
+}
 
 downloadAndroidSDK
 installAndroidSDK
 getIclientCode
 compileIclinet
+deployIclient
 
 cd $cur_dir
 
