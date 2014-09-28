@@ -7,7 +7,6 @@ cur_dir=$(cd "$(dirname "$0")"; pwd)
 
 function downloadProbe(){
   mkdir -p $GLOBAL_DOWNLOAD_DIR
-  rm -rf $GLOBAL_DOWNLOAD_DIR/*
   if [ ! -f "$GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip" ]; then
     set +e
     export http_proxy="http://202.171.253.134"
@@ -25,7 +24,9 @@ function downloadProbe(){
 function deployProbe(){
   unzip -oq $GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip -d /tmp
   mkdir -p $TOMCAT_HOME/webapps/probe
+  rm -rf $TOMCAT_HOME/webapps/probe/*
   unzip -oq /tmp/probe.war -d $TOMCAT_HOME/webapps/probe
+  rm -rf /tmp/probe.war
 }
 
 function configyProbe(){
