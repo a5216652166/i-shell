@@ -27,25 +27,25 @@ function deployProbe(){
   unzip -oq /tmp/probe.war -d $TOMCAT_HOME/webapps/probe
 }
 
-function configyProbe(){
-  #TODO:输入用户名密码
-
-  if [ ! -f "$TOMCAT_USER_BACKUP_FILE" ]; then
-    \cp -av $TOMCAT_USER_FILE $TOMCAT_USER_BACKUP_FILE
-  fi
-
-  (cat > $TOMCAT_USER_FILE <<EOF
-  <?xml version='1.0' encoding='utf-8'?>
-  <tomcat-users>
-    <role rolename="manager"/>
-    <role rolename="tomcat"/>
-    <role rolename="poweruser"/>
-    <role rolename="poweruserplus"/>
-    <role rolename="probeuser"/>
-    <user username="admin" password="itserver" roles="tomcat,manager,probeuser,poweruserplus,poweruser"/>
-  </tomcat-users>
-  EOF)
-}
+#function configyProbe(){
+#  #TODO:输入用户名密码
+#
+#  if [ ! -f "$TOMCAT_USER_BACKUP_FILE" ]; then
+#    \cp -av $TOMCAT_USER_FILE $TOMCAT_USER_BACKUP_FILE
+#  fi
+#
+#  (cat > $TOMCAT_USER_FILE <<EOF
+#  <?xml version='1.0' encoding='utf-8'?>
+#  <tomcat-users>
+#    <role rolename="manager"/>
+#    <role rolename="tomcat"/>
+#    <role rolename="poweruser"/>
+#    <role rolename="poweruserplus"/>
+#    <role rolename="probeuser"/>
+#    <user username="admin" password="itserver" roles="tomcat,manager,probeuser,poweruserplus,poweruser"/>
+#  </tomcat-users>
+#  EOF)
+#}
 
 downloadProbe
 deployProbe
