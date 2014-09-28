@@ -29,8 +29,6 @@ function deployProbe(){
 
 function configyProbe(){
   #TODO:输入用户名密码
-  TOMCAT_USER_FILE=$TOMCAT_CONFIG_DIR/tomcat-users.xml
-  TOMCAT_USER_BACKUP_FILE= $TOMCAT_CONFIG_DIR/tomcat-users.xml.bak
 
   if [ ! -f "$TOMCAT_USER_BACKUP_FILE" ]; then
     \cp -av $TOMCAT_USER_FILE $TOMCAT_USER_BACKUP_FILE
