@@ -18,11 +18,12 @@ function downloadAndroidSDK(){
 }
 
 function installAndroidSDK(){
+  #for centos6.5
   yum install -y  compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6 
   if [ ! -d "/opt/" ]; then
     mkdir -p /opt
   fi
-  unzip  $GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip -d /opt
+  unzip -oq $GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip -d /opt
   Android_SDK_Home=/opt/adt-bundle-linux-x86_64-20140321/sdk
   grep -q "export AUTO_GEN_ANDROID" /etc/profile &&{
 	echo "ANDROID config exits."
@@ -51,7 +52,7 @@ function getIclientCode(){
 
 function compileIclinet(){
   . /etc/profile
-  ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME -Dkey.alias=$ICLIENT_KEY_ALIAS -Dkey.alias.password=$ICLIENT_KEY_ALIAS_PASSWORD -Dkey.store.password=$ICLIENT_KEY_STORE_PASSWORD  -Dkey.store=$ICLIENT_KEY_STORE_FILE clean release
+  ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/build.xml -Dkey.alias=$ICLIENT_KEY_ALIAS -Dkey.alias.password=$ICLIENT_KEY_ALIAS_PASSWORD -Dkey.store.password=$ICLIENT_KEY_STORE_PASSWORD  -Dkey.store=$ICLIENT_KEY_STORE_FILE clean release
   #ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME clean debug
 }
 
