@@ -9,3 +9,10 @@
 ../backup/iserver
 
 tomcat_home=/usr/share/tomcat
+
+nginx默认目录
+1 配置所在目录：/etc/nginx/
+2 PID目录：/var/run/nginx.pid
+3 错误日志：/var/log/nginx/error.log
+4 访问日志：/var/log/nginx/access.log
+5 默认站点目录：/usr/share/nginx/html
