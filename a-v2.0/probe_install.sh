@@ -51,7 +51,7 @@ function configyProbe(){
 
 downloadProbe
 deployProbe
-configyProbe
+#configyProbe
 service tomcat restart
 
 cd $cur_dir
