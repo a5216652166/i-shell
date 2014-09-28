@@ -15,6 +15,7 @@ rpm -ivh --force ftp://ftp.pbone.net/mirror/www.jpackage.org/jpackage/6.0/generi
 rpm -ivh --force http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
 rpm -ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
 wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+rpm --import /etc/pki/rpm-gpg/RPM*
 #yum repolist
 yum makecache
 #yum install java-1.7.0-openjdk java-1.7.0-openjdk-devel -y
