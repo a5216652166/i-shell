@@ -34,7 +34,7 @@ function configyProbe(){
     \cp -av $TOMCAT_USER_FILE $TOMCAT_USER_BACKUP_FILE
   fi
 
-  cat > $TOMCAT_USER_FILE <<EOF
+  (cat > $TOMCAT_USER_FILE <<EOF
   <?xml version='1.0' encoding='utf-8'?>
   <tomcat-users>
     <role rolename="manager"/>
@@ -44,7 +44,7 @@ function configyProbe(){
     <role rolename="probeuser"/>
     <user username="admin" password="itserver" roles="tomcat,manager,probeuser,poweruserplus,poweruser"/>
   </tomcat-users>
-  EOF
+  EOF)
 }
 
 downloadProbe
