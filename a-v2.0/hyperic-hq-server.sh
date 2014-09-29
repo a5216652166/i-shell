@@ -21,14 +21,22 @@ function downloadHyperic(){
 }
 
 function installHyperic(){
+  mkdir -p /home/hyperic
   unzip -oq $GLOBAL_DOWNLOAD_DIR/hyperic-hq-installer-noJRE-zip-5.8.2.1.zip -d /tmp
   cd /tmp/hyperic-hq-installer-5.8.2.1
-  ./setup.sh
+  groupadd hq 
+  useradd -g hq hq
+  chown -R hq /home/hyperic
+  chgrp -R hq /home/hyperic
+  chown -R hq /tmp/hyperic-hq-installer-5.8.2.1
+  chgrp -R hq /tmp/hyperic-hq-installer-5.8.2.1
+  su -c /tmp/hyperic-hq-installer-5.8.2.1/setup.sh hq
   rm -rf /tmp/hyperic-hq-installer-5.8.2.1
 }
 
 #/var/lib/pgsql/9.3/data/postgresql.conf
 #/var/lib/pgsql/9.3
+#default user:postgres
 #http://www.postgresql.org/download/linux/redhat/#yum
 function installPostgresql93(){
   yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm -y
