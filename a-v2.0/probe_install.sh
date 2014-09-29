@@ -8,8 +8,10 @@ cur_dir=$(cd "$(dirname "$0")"; pwd)
 function downloadProbe(){
   mkdir -p $GLOBAL_DOWNLOAD_DIR
   if [ ! -f "$GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip" ]; then
-    export http_proxy="http://202.171.253.134"
-    export https_proxy="https://202.171.253.134"
+    #export http_proxy="http://202.171.253.134"
+    #export https_proxy="https://202.171.253.134"
+    export http_proxy="http://211.144.81.68:18000"
+    export https_proxy="https://211.144.81.68:18000"
     set +e
     wget -P $GLOBAL_DOWNLOAD_DIR  "http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
     if [ "$?" -eq "1" ]; then
