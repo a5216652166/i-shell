@@ -12,8 +12,8 @@ function downloadProbe(){
     #export https_proxy="https://202.171.253.134"
     #export http_proxy="http://211.144.81.68:18000"
     #export https_proxy="https://211.144.81.68:18000"
-    export http_proxy="http://140.130.13.66:8080"
-    export https_proxy="https://140.130.13.66:8080"
+    export http_proxy="http://210.101.131.231:8080"
+    export https_proxy="https://210.101.131.231:8080"
     
     set +e
     wget -P $GLOBAL_DOWNLOAD_DIR  "http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
