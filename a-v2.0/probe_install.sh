@@ -33,12 +33,33 @@ function deployProbe(){
   rm -rf /tmp/probe.war
 }
 
+#用户输入 变量 用户文本 默认值
+function prompt(){
+  variable=$1
+  prompt_text=$2
+  default_value=$3
+
+  if [ -z "$variable" ]; then
+    echo "Variable name was not given!" && exit 1
+  fi
+
+  read -p "$prompt_text [$default_value]: " $variable
+
+  if [ -z "${!variable}" ]; then
+    eval "$variable=$default_value"
+  fi
+
+}
+
 function configyProbe(){
   #TODO:输入用户名密码
 
   if [ ! -f "$TOMCAT_USER_BACKUP_FILE" ]; then
     \cp -av $TOMCAT_USER_FILE $TOMCAT_USER_BACKUP_FILE
   fi
+
+  prompt probeUser 'Probe System User' 'admin'
+  prompt probeUserPassword 'Probe User Password' 'admin'
 
   echo "<?xml version='1.0' encoding='utf-8'?>" > $TOMCAT_USER_FILE
   echo '<tomcat-users>' >> $TOMCAT_USER_FILE
@@ -47,7 +68,7 @@ function configyProbe(){
   echo '<role rolename="poweruser"/>' >> $TOMCAT_USER_FILE
   echo '<role rolename="poweruserplus"/>' >> $TOMCAT_USER_FILE
   echo '<role rolename="probeuser"/>' >> $TOMCAT_USER_FILE
-  echo '<user username="admin" password="itserver" roles="tomcat,manager,probeuser,poweruserplus,poweruser"/>' >> $TOMCAT_USER_FILE
+  echo "<user username=\"$probeUser\" password=\"$probeUserPassword\" roles=\"tomcat,manager,probeuser,poweruserplus,poweruser\"/>" >> $TOMCAT_USER_FILE
   echo '</tomcat-users>' >> $TOMCAT_USER_FILE
 
 #  (cat > $TOMCAT_USER_FILE <<EOF
