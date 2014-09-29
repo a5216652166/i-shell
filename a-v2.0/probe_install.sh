@@ -14,7 +14,6 @@ function downloadProbe(){
     #export https_proxy="https://211.144.81.68:18000"
     #export http_proxy="http://173.201.95.24"
     #export https_proxy="https://173.201.95.24"
-    
     set +e
     wget -P $GLOBAL_DOWNLOAD_DIR  "http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
     if [ "$?" -eq "1" ]; then
