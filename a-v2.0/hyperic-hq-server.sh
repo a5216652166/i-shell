@@ -5,6 +5,8 @@ set -e
 source ./config.conf
 cur_dir=$(cd "$(dirname "$0")"; pwd)
 
+HYPERIC_VERSION=5.8.2
+
 #http://sourceforge.net/projects/hyperic-hq/files/
 #PostgreSQL±È½Ïhttp://bbs.chinaunix.net/thread-1688208-1-1.html
 #http://www.php100.com/manual/PostgreSQL8/
@@ -14,5 +16,7 @@ cur_dir=$(cd "$(dirname "$0")"; pwd)
 yum install postgresql-server -y
 service postgresql initdb
 chkconfig postgresql on
+#/var/lib/pgsql
+
 cd $cur_dir
 
