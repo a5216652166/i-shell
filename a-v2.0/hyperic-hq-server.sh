@@ -50,8 +50,8 @@ installPostgresql93
 downloadHyperic
 installHyperic
 
-
-
+/home/hyperic/server-5.8.2.1/bin/hq-server.sh start
+/home/hyperic/agent-5.8.2.1/bin/hq-agent.sh start
 
 cd $cur_dir
 
