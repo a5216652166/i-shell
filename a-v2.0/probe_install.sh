@@ -3,6 +3,8 @@
 
 set -e
 source ./config.conf
+source ./ilib
+
 cur_dir=$(cd "$(dirname "$0")"; pwd)
 
 function downloadProbe(){
@@ -31,24 +33,6 @@ function deployProbe(){
   rm -rf $TOMCAT_HOME/webapps/probe/*
   unzip -oq /tmp/probe.war -d $TOMCAT_HOME/webapps/probe
   rm -rf /tmp/probe.war
-}
-
-#用户输入 变量 用户文本 默认值
-function prompt(){
-  variable=$1
-  prompt_text=$2
-  default_value=$3
-
-  if [ -z "$variable" ]; then
-    echo "Variable name was not given!" && exit 1
-  fi
-
-  read -p "$prompt_text [$default_value]: " $variable
-
-  if [ -z "${!variable}" ]; then
-    eval "$variable=$default_value"
-  fi
-
 }
 
 function configyProbe(){

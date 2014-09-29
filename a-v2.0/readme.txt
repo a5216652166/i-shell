@@ -8,6 +8,7 @@
 ../backup/mysql
 ../backup/iserver
 
+/etc/tomcat
 tomcat_home=/usr/share/tomcat
 
 nginxÄ¬ÈÏÄ¿Â¼
