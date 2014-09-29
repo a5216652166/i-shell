@@ -71,29 +71,21 @@ else
 fi
 
 if [ -z "$ICLIENT_KEY_STORE_FILE" ]; then
-    prompt ICLIENT_KEY_STORE_FILE 'ICLIENT_KEY_STORE_FILE' '/root/ipetty.keystore'
+    prompt ICLIENT_KEY_STORE_FILE 'Ipetty keystore file path' '/root/ipetty.keystore'
     echo "ICLIENT_KEY_STORE_FILE=$ICLIENT_KEY_STORE_FILE" >> $ICLIENT_CONFIG_FILE
 fi
 if [ -z "$ICLIENT_KEY_STORE_PASSWORD" ]; then
-    prompt ICLIENT_KEY_STORE_PASSWORD 'ICLIENT_KEY_STORE_PASSWORD' ''
+    prompt ICLIENT_KEY_STORE_PASSWORD 'Ipetty keystore password' 'somepassword'
     echo "ICLIENT_KEY_STORE_PASSWORD=$ICLIENT_KEY_STORE_PASSWORD" >> $ICLIENT_CONFIG_FILE
 fi
 if [ -z "$ICLIENT_KEY_ALIAS" ]; then
-    prompt ICLIENT_KEY_ALIAS 'ICLIENT_KEY_ALIAS' ''
+    prompt ICLIENT_KEY_ALIAS 'Ipetty key alias' 'ipetty.ks'
     echo "ICLIENT_KEY_ALIAS=$ICLIENT_KEY_ALIAS" >> $ICLIENT_CONFIG_FILE
 fi
 if [ -z "$ICLIENT_KEY_ALIAS_PASSWORD" ]; then
-    prompt ICLIENT_KEY_ALIAS_PASSWORD 'ICLIENT_KEY_ALIAS_PASSWORD' ''
+    prompt ICLIENT_KEY_ALIAS_PASSWORD 'Ipetty key alias password' 'somepassword'
     echo "ICLIENT_KEY_ALIAS_PASSWORD=$ICLIENT_KEY_ALIAS_PASSWORD" >> $ICLIENT_CONFIG_FILE
 fi
-
-#ICLIENT_KEY_STORE_FILE=
-#ICLIENT_KEY_STORE_PASSWORD=
-#ICLIENT_KEY_ALIAS=
-#ICLIENT_KEY_ALIAS_PASSWORD=
-
-
-
 
 downloadAndroidSDK
 installAndroidSDK
