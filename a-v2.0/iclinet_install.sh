@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-
 set -e
 source ./config.conf
+source ./ilib
+
 cur_dir=$(cd "$(dirname "$0")"; pwd)
 
 function downloadAndroidSDK(){
@@ -60,6 +61,39 @@ function deployIclient(){
   \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/i-client-release.apk $ISERVER_UPLOAD_DIR/ipetty.apk
   \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/update.json $ISERVER_UPLOAD_DIR/
 }
+
+mkdir -p $ICLIENT_CONFIG_DIR
+
+if [ ! -f "$ICLIENT_CONFIG_FILE" ]; then
+    echo "" > $ICLIENT_CONFIG_FILE
+else
+    source $ICLIENT_CONFIG_FILE
+fi
+
+if [ -z "$ICLIENT_KEY_STORE_FILE" ]; then
+    prompt ICLIENT_KEY_STORE_FILE 'ICLIENT_KEY_STORE_FILE' '/root/ipetty.keystore'
+    echo "ICLIENT_KEY_STORE_FILE=$ICLIENT_KEY_STORE_FILE" >> $ICLIENT_CONFIG_FILE
+fi
+if [ -z "$ICLIENT_KEY_STORE_PASSWORD" ]; then
+    prompt ICLIENT_KEY_STORE_PASSWORD 'ICLIENT_KEY_STORE_PASSWORD' ''
+    echo "ICLIENT_KEY_STORE_PASSWORD=$ICLIENT_KEY_STORE_PASSWORD" >> $ICLIENT_CONFIG_FILE
+fi
+if [ -z "$ICLIENT_KEY_ALIAS" ]; then
+    prompt ICLIENT_KEY_ALIAS 'ICLIENT_KEY_ALIAS' ''
+    echo "ICLIENT_KEY_ALIAS=$ICLIENT_KEY_ALIAS" >> $ICLIENT_CONFIG_FILE
+fi
+if [ -z "$ICLIENT_KEY_ALIAS_PASSWORD" ]; then
+    prompt ICLIENT_KEY_ALIAS_PASSWORD 'ICLIENT_KEY_ALIAS_PASSWORD' ''
+    echo "ICLIENT_KEY_ALIAS_PASSWORD=$ICLIENT_KEY_ALIAS_PASSWORD" >> $ICLIENT_CONFIG_FILE
+fi
+
+#ICLIENT_KEY_STORE_FILE=
+#ICLIENT_KEY_STORE_PASSWORD=
+#ICLIENT_KEY_ALIAS=
+#ICLIENT_KEY_ALIAS_PASSWORD=
+
+
+
 
 downloadAndroidSDK
 installAndroidSDK
