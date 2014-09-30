@@ -7,7 +7,7 @@ cur_dir=$(cd "$(dirname "$0")"; pwd)
 
 #http://sourceforge.net/projects/hyperic-hq/files/Hyperic%205.8.2/
 #http://sourceforge.net/projects/hyperichq-zh-cn/
-
+#https://support.hyperic.com/display/DOC/HQ+Documentation
 function downloadHyperic(){
   mkdir -p $GLOBAL_DOWNLOAD_DIR
   if [ ! -f "$GLOBAL_DOWNLOAD_DIR/hyperic-hq-installer-noJRE-zip-5.8.2.1.zip" ]; then
@@ -49,13 +49,14 @@ function installPostgresql93(){
   yum install postgresql93-server postgresql93-contrib -y
   service postgresql-9.3 initdb
   chkconfig postgresql-9.3 on
-  #TODO:config /var/lib/pgsql/9.3/data/postgresql.conf  #listen_addresses = 'localhost'-->listen_addresses = '*'
+  #TODO:config /var/lib/pgsql/9.3/data/postgresql.conf #listen_addresses = 'localhost'-->listen_addresses = '*'
+  #TODO:config /var/lib/pgsql/9.3/data/pg_hba.conf host    all             all             127.0.0.1/32            ident-->password
   service postgresql-9.3 restart
   #sudo -u postgres psql -c "ALTER USER postgres with password 'postgres';"
   #sudo -u postgres createdb HQ
   sudo -u postgres psql -c "CREATE USER hqadmin WITH ENCRYPTED PASSWORD 'hqadmin'"
-  sudo -u postgres psql -c "drop DATABASE "HQ""
-  sudo -u postgres psql -c "CREATE DATABASE "HQ" OWNER hqadmin ENCODING 'UTF8'"
+  sudo -u postgres psql -c "drop DATABASE \"HQ\""
+  sudo -u postgres psql -c "CREATE DATABASE \"HQ\" OWNER hqadmin ENCODING 'UTF8'"
 }
 
 function installPostgresql(){
