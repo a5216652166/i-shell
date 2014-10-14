@@ -10,7 +10,7 @@ mysql -e "create database if not exists ipetty default charset utf8;"
 mysql ipetty < /tmp/ipetty.sql
 
 rm -rf $ISERVER_UPLOAD_DIR/*
-scp -r $ISERVER_UPLOAD_DIR root@115.29.103.123:/home/data/files
+scp -r root@115.29.103.123:/home/data/files/* $ISERVER_UPLOAD_DIR 
 
 cd $cur_dir
 
