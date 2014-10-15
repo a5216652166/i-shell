@@ -46,6 +46,8 @@ function deployIServer(){
   sed -i "/^jdbc.username=/c\jdbc.username=root" $TOMCAT_HOME/webapps/ROOT/WEB-INF/classes/jdbc.properties
   sed -i "/^jdbc.password=/c\jdbc.password=" $TOMCAT_HOME/webapps/ROOT/WEB-INF/classes/jdbc.properties
   mkdir -p $ISERVER_UPLOAD_DIR
+  chown -R tomcat $ISERVER_UPLOAD_DIR
+  chgrp -R tomcat $ISERVER_UPLOAD_DIR
   ln -sf $ISERVER_UPLOAD_DIR $TOMCAT_HOME/webapps/ROOT
   mysql -e "create database if not exists ipetty default charset utf8;"
   service tomcat restart

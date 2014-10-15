@@ -19,8 +19,11 @@ fi
 
 # 行前加sed -i '/http {/i\    server_tokens off;'
 # 行后加
+sed -i '/http {/a\    client_max_body_size 30m;' $NGINX_CONFIG_FILE
+sed -i '/http {/a\    client_body_buffer_size 1024k;' $NGINX_CONFIG_FILE
 sed -i '/http {/a\    underscores_in_headers on;' $NGINX_CONFIG_FILE
 sed -i '/http {/a\    server_tokens off;' $NGINX_CONFIG_FILE
+
 # 替换
 sed -i '/#gzip  on;/c\    gzip  on;' $NGINX_CONFIG_FILE
 # 删除匹配行
