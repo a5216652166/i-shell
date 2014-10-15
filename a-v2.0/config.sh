@@ -19,6 +19,7 @@ fi
 
 # 行前加sed -i '/http {/i\    server_tokens off;'
 # 行后加
+sed -i '/http {/a\    underscores_in_headers on;' $NGINX_CONFIG_FILE
 sed -i '/http {/a\    server_tokens off;' $NGINX_CONFIG_FILE
 # 替换
 sed -i '/#gzip  on;/c\    gzip  on;' $NGINX_CONFIG_FILE
