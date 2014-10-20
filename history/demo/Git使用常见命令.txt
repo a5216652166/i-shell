@@ -1,0 +1,23 @@
+简明入门:http://rogerdudler.github.io/git-guide/index.zh.html
+
+1.不建议使用SVN与Git服务器通讯。SVN当出现不能正常更新或提交时不能显示详细的原因，可能会造成误操作。
+
+2.SVN提交代码前一定要先更新再提交（使用Git客户端不存在此问题），出现冲突先在本地解决掉再提交
+
+3.使用Git客户端，要先Commit后再push，Commit会提交在本地版本，push是上传到服务器。
+
+4.Git客户端无法push，出现"-fast forward"字样，说明本地版本与服务器版本不一致，需要先pull（从远程服务器下拉最新版本）后再push
+
+5.Git客户端正确的提交代码步骤应为：
+1)先Commit，提交本地代码，本地可以提交多次，然后一起push到服务端.
+2)再push，提交到服务端。若无法push参照上面第4点解决。
+
+6.误提交还原办法：
+1)只Commit到本地，没有push的远端，则使用IDE中的“撤销提交”功能即可
+2)若已经push到远端则先使用"git reset --hard <要rollback到的commit>"还原本地版本库，再使用"git push -f "强制提交到远端。注意在此过程中要通知其他团队成员暂停提交代码，直到还原后方可提交，否则会造成新提交的代码丢失。
+
+7.shell脚本如何加上执行权限：git update-index --chmod=+x post_deploy
+8.如何命令行提交：
+$ git add .
+$ git commit -am "Adding hot_deploy marker"
+$ git push
