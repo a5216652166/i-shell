@@ -17,7 +17,7 @@ case "$1" in
         iclinetConfigPrompt
         linuxInit
         installTomcat
-        installProbe
+        #installProbe
         installAnt
         installMaven
         installMysql
@@ -114,6 +114,11 @@ case "$1" in
     iperf)
         installIperf
         echo "iperf OK"
+        ;;
+    probe)
+        installProbe
+	service tomcat restart
+        echo "probe OK"
         ;;
     *)
       usage
