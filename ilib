@@ -45,6 +45,8 @@ function linuxIntiPrompt(){
 }
 
 function linuxInit(){
+    #for coentos7
+    #yum install wget git ntp zip unzip mlocate net-tools -y
     yum install wget git ntp zip unzip mlocate -y
 
     initGlobalDir

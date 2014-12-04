@@ -1,0 +1,40 @@
+function installDocker(){
+    rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    yum -y install docker-io
+    chkconfig docker on
+    service docker start
+    #下载最新镜像
+    #docker pull centos:latest
+    docker pull centos:centos6
+    #查看已有镜像
+    docker images centos
+    #进入命令行
+    docker run -i -t centos:centos6 /bin/bash
+    #启动API
+    #service docker stop
+    #docker -d -H unix:///var/run/docker.sock -H 0.0.0.0:4243
+    #curl http://127.0.0.1:4243/containers/json
+    #查看正在运行的容器
+    #docker ps -l
+    #提交变更
+    #docker commit 2718a04c39a2
+    #容器内运行SSH Server占用22端口，-p 22进行指定。-p 80:8080 指的是，我们ubuntu将会以8080端口运行tomcat，但对外（容器外）映射的端口为80。
+    #docker run -d -p 22 -p 80:8080 centos:centos7 /usr/sbin/sshd -D
+    #映射容器端口 >docker run -d -p 192.168.9.11:2201:22 centos:centos6 /usr/sbin/sshd -D
+    #宿主机上的目录挂载到镜像里>docker run -it -v /home/dock/Downloads:/usr/Downloads:ro ubuntu64 /bin/bash
+    #只读可以用：ro>docker run -it -v /home/dock/Downloads:/usr/Downloads:ro ubuntu64 /bin/bash
+    #数据卷：“其实就是一个正常的容器，专门用来提供数据卷供其它容器挂载的”
+    #docker run -v /home/dock/Downloads:/usr/Downloads  --name dataVol ubuntu64 /bin/bash
+    #再创建一个新的容器，来使用这个数据卷
+    #docker run -it --volumes-from dataVol ubuntu64 /bin/bash
+    #镜像导出(commit时生成的new-image)>docker save new-image > /tmp/new-image.tar  
+    #导入tar包到本地docker镜像>docker load < /tmp/new-image.tar  
+    #移除镜像>docker rmi training/sinatra
+}
+
+#目录:/var/lib/docker
+
+#添加对外远程接口，使得 Docker API 在 tcp 上可用
+#编辑 :/etc/default/docker (没好用)
+#追加 :DOCKER_OPTS="-H 0.0.0.0:4243" 
